@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Timetable</title>
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic">
+    <link rel="stylesheet" href="//cdn.rawgit.com/necolas/normalize.css/master/normalize.css">
+    <link rel="stylesheet" href="//cdn.rawgit.com/milligram/milligram/master/dist/milligram.min.css">
+    <link rel="stylesheet" href="../school.css">
+</head>
+<body>
+<h1>Login</h1>
+<form action="/login" method="post">
+    <fieldset>
+        <label for="nameField">Name</label>
+        <input type="text" placeholder="Enter your name" id="nameField" name="name" required>
+        <div class="float-right">
+            <input type="checkbox" id="confirmField">
+            <label class="label-inline" for="confirmField">Check this for no reason</label>
+        </div>
+        <input class="button-primary" type="submit" value="Login">
+        <label th:text="${errorMessage}" class="label-inline"></label>
+    </fieldset>
+</form>
+
+</body>
+</html>

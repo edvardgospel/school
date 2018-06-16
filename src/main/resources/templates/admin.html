@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Timetable</title>
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic">
+    <link rel="stylesheet" href="//cdn.rawgit.com/necolas/normalize.css/master/normalize.css">
+    <link rel="stylesheet" href="//cdn.rawgit.com/milligram/milligram/master/dist/milligram.min.css">
+    <link rel="stylesheet" href="../static/school.css">
+</head>
+<body>
+<h1>Timetable</h1>
+<div>
+    <form>
+        <fieldset>
+            <label for="ageRangeField">Select teacher</label>
+            <select id="ageRangeField">
+                <option value="0-13">0-13</option>
+                <option value="14-17">14-17</option>
+                <option value="18-23">18-23</option>
+                <option value="24+">24+</option>
+            </select>
+            <!--<div class="float-right">-->
+                <!--<input type="checkbox" id="confirmField">-->
+                <!--<label class="label-inline" for="confirmField">Send a copy to yourself</label>-->
+            <!--</div>-->
+            <input class="button-primary" type="submit" value="Send">
+        </fieldset>
+    </form>
+
+    <table>
+        <thead>
+        <tr>
+            <th>Time</th>
+            <th>Monday</th>
+            <th>Tuesday</th>
+            <th>Wednesday</th>
+            <th>Thursday</th>
+            <th>Friday</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <th>8</th>
+            <td th:text="${monday8}"></td>
+            <td th:text="${tuesday8}"></td>
+            <td th:text="${wednesday8}"></td>
+            <td th:text="${thursday8}"></td>
+            <td th:text="${friday8}"></td>
+        </tr>
+        <tr>
+            <th>9</th>
+            <td th:text="${monday9}"></td>
+            <td th:text="${tuesday9}"></td>
+            <td th:text="${wednesday9}"></td>
+            <td th:text="${thursday9}"></td>
+            <td th:text="${friday9}"></td>
+        </tr>
+        <tr>
+            <th>10</th>
+            <td th:text="${monday10}"></td>
+            <td th:text="${tuesday10}"></td>
+            <td th:text="${wednesday10}"></td>
+            <td th:text="${thursday10}"></td>
+            <td th:text="${friday10}"></td>
+        </tr>
+        <tr>
+            <th>11</th>
+            <td th:text="${monday11}"></td>
+            <td th:text="${tuesday11}"></td>
+            <td th:text="${wednesday11}"></td>
+            <td th:text="${thursday11}"></td>
+            <td th:text="${friday11}"></td>
+        </tr>
+        <tr>
+            <th>12</th>
+            <td th:text="${monday12}"></td>
+            <td th:text="${tuesday12}"></td>
+            <td th:text="${wednesday12}"></td>
+            <td th:text="${thursday12}"></td>
+            <td th:text="${friday12}"></td>
+        </tr>
+        <tr>
+            <th>13</th>
+            <td th:text="${monday13}"></td>
+            <td th:text="${tuesday13}"></td>
+            <td th:text="${wednesday13}"></td>
+            <td th:text="${thursday13}"></td>
+            <td th:text="${friday13}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>
