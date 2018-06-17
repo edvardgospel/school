@@ -49,7 +49,7 @@ public class LoginController {
             List<User> users = userManagerService.getUsers();
             model.addAttribute(USERS,users);
         } else if (roleName.equals(TEACHER)) {
-
+            userManagerService.getSubjects(name);
         }
         return roleName;
     }

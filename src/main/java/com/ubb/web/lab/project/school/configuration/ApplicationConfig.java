@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 import com.ubb.web.lab.project.school.dto.RoleEntityToRoleTransformer;
 import com.ubb.web.lab.project.school.dto.UserEntityToUserTransformer;
+import com.ubb.web.lab.project.school.repository.SubjectRepository;
 import com.ubb.web.lab.project.school.service.UserManagerService;
 import com.ubb.web.lab.project.school.service.UserValidatorService;
 
@@ -33,4 +34,5 @@ public class ApplicationConfig {
     public UserEntityToUserTransformer createUserEntityToUserTransformer() {
         return new UserEntityToUserTransformer();
     }
+
 }
