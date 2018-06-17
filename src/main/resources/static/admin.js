@@ -1,22 +1,41 @@
-function createUser() {
-    console.log("create");
-    var popup = document.getElementById("myPopup");
-        popup.classList.toggle("show");
+var createPopup;
+var updatePopup;
+var deletePopup;
+
+function openCreatePopup() {
+    $.ajax({
+        url: "/admin/subjects",
+        type: "get",
+        success: function (subjects) {
+            $("#allSubjects").html(subjects.join(',  '));
+        }
+    });
+    createPopup = document.getElementById("createPopup");
+    createPopup.classList.toggle("show");
 }
 
-function updateUser(teacher) {
-    console.log("update " + teacher);
+function openUpdatePopup(teacher) {
+    updatePopup = document.getElementById("updatePopup");
+    updatePopup.classList.toggle("show");
 }
 
-function deleteUser(teacher) {
-    console.log("delete " + teacher);
+function openDeletePopup(teacher) {
+    $("#deleteLabel").html("Are you sure you want do delete <b>" + teacher + "</b>?");
+    deletePopup = document.getElementById("deletePopup");
+    deletePopup.classList.toggle("show");
 }
 
-function logOut() {
-    console.log("logOut");
-}
-
-function myFunction() {
-    var popup = document.getElementById("myPopup");
+function cancelPopup(popup) {
     popup.classList.toggle("show");
+}
+
+function teacherChanged(newTeacher) {
+    $.ajax({
+        url: "/admin",
+        type: "post",
+        data: {"name": newTeacher},
+        success: function (subjects) {
+            $("#subjectList").replaceWith(subjects);
+        }
+    });
 }

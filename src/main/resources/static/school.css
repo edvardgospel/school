@@ -3,37 +3,38 @@ html {
 }
 
 body {
-    margin: 0rem 20rem 0rem 20rem;
+    margin: 1rem 20rem 4rem 20rem;
 }
 
 /* The actual popup (appears on top) */
 .popup {
     visibility: hidden;
-    background-color: #ffffff;
+    background-color: #f8f8f8;
     border: 0.1rem solid #9b4dca;
     border-radius: 6px;
     position: absolute;
-    top: 20rem;
+    top: 8rem;
     left: 20rem;
     right: 20rem;
-    z-index: auto;
-
-}
-
-
-/* Toggle this class when clicking on the popup container (hide and show the popup) */
-.show {
-    visibility: visible;
-    -webkit-animation: fadeIn 1s;
-    animation: fadeIn 1s
-}
-
-/* Add animation (fade in the popup) */
-@-webkit-keyframes fadeIn {
-    from {opacity: 0;}
-    to {opacity: 1;}
+    z-index: 1;
+    padding: 1.5rem;
 }
 
 th {
     text-align: center;
 }
+
+textarea {
+    resize: none;
+}
+
+.show {
+    visibility: visible;
+    -webkit-animation: fadeIn 0.5s;
+}
+
+@-webkit-keyframes fadeIn {
+    from {opacity: 0;}
+    to {opacity: 1;}
+}
+

@@ -10,26 +10,42 @@
 </head>
 <body>
 <h1>Timetable</h1>
-<div class="popup" id="myPopup">
-    <label for="nameField" class="label-inline">Name</label>
-    <input type="text" placeholder="Enter your name" id="nameField" name="name" required autocomplete="off">
+<div class="popup" id="createPopup">
+    <label class="label-inline" for="confirmField">Make admin&nbsp;</label>
     <input type="checkbox" id="confirmField">
-    <label class="label-inline" for="confirmField">Make admin</label>
-    <input class="button button-clear" type="button" value="Save" onclick="saveCreateUser()">
-    <input class="button button-clear" type="button" value="Cancel" onclick="cancelCreateUser()">
+    <input type="text" placeholder="Enter new user" id="nameField" name="name" required autocomplete="off">
+    <textarea placeholder="Type in the valid subjects and grades separated by commas (e.g. math2, literature3)" id="commentField"></textarea>
+    <label class="label-inline">Valid subjects:</label>
+    <textarea id="allSubjects" style="height: 11rem" disabled></textarea>
+    <br>
+    <input class="button button-clear float-left" type="button" value="Save"
+           onclick="saveNewUser(nameField.value,confirmField.value)">
+    <input class="button button-clear float-right" type="button" value="Cancel" onclick="cancelPopup(createPopup)">
+</div>
+<div class="popup" id="updatePopup">
+    <p>UpdatePopup</p>
+</div>
+<div class="popup" id="deletePopup">
+    <label id="deleteLabel" class="label-inline"></label>
+    <br>
+    <br>
+    <input style="color: #ff0000" class="button button-clear float-left" type="button" value="Delete"
+           onclick="deleteUser(teacher.value)">
+    <input class="button button-clear float-right" type="button" value="Cancel"
+           onclick="cancelPopup(deletePopup)">
 </div>
 <div>
-    <form>
+    <form action="/admin/logout" method="get">
         <fieldset>
             <label for="teacher">Select teacher</label>
-            <select id="teacher">
+            <select id="teacher" onchange="teacherChanged(teacher.value)">
                 <option th:each="user : ${users}" th:text="${user.name}"></option>
             </select>
             <input class="button" type="button" value="Save">
-            <input class="button button-outline" type="button" value="Create" onclick="createUser()">
-            <input class="button button-outline" type="button" value="Update" onclick="updateUser(teacher.value)">
-            <input class="button button-outline" type="button" value="Delete" onclick="deleteUser(teacher.value)">
-            <input class="button button-clear float-right" type="button" value="Log out" onclick="logOut()">
+            <input class="button button-outline" type="button" value="Create" onclick="openCreatePopup()">
+            <input class="button button-outline" type="button" value="Update" onclick="openUpdatePopup(teacher.value)">
+            <input class="button button-outline" type="button" value="Delete" onclick="openDeletePopup(teacher.value)">
+            <input class="button button-clear float-right" type="submit" value="Log out" onclick="logOut()">
         </fieldset>
     </form>
 
@@ -47,55 +63,61 @@
         <tbody>
         <tr>
             <th>8</th>
-            <td th:text="${monday8}"><input type="text"  id="monday8" autocomplete="off"></td>
-            <td th:text="${tuesday8}"><input type="text" id="tuesday8" autocomplete="off"></td>
-            <td th:text="${wednesday8}"><input type="text" id="wednesday8" required autocomplete="off"></td>
-            <td th:text="${thursday8}"><input type="text" id="thursday8" required autocomplete="off"></td>
-            <td th:text="${friday8}"><input type="text" id="friday8" required autocomplete="off"></td>
+            <td><input type="text" id="monday8" autocomplete="off" th:text="${monday8}"></td>
+            <td><input type="text" id="tuesday8" autocomplete="off" th:text="${tuesday8}"></td>
+            <td><input type="text" id="wednesday8" autocomplete="off" th:text="${wednesday8}"></td>
+            <td><input type="text" id="thursday8" autocomplete="off" th:text="${thursday8}"></td>
+            <td><input type="text" id="friday8" autocomplete="off" th:text="${friday8}"></td>
         </tr>
         <tr>
             <th>9</th>
-            <td th:text="${monday9}"><input type="text"  id="monday9" autocomplete="off"></td>
-            <td th:text="${tuesday9}"><input type="text" id="tuesday9" autocomplete="off"></td>
-            <td th:text="${wednesday9}"><input type="text" id="wednesday9" required autocomplete="off"></td>
-            <td th:text="${thursday9}"><input type="text" id="thursday9" required autocomplete="off"></td>
-            <td th:text="${friday9}"><input type="text" id="friday9" required autocomplete="off"></td>
+            <td><input type="text" id="monday9" autocomplete="off" th:text="${monday9}"></td>
+            <td><input type="text" id="tuesday9" autocomplete="off" th:text="${tuesday9}"></td>
+            <td><input type="text" id="wednesday9" autocomplete="off" th:text="${wednesday9}"></td>
+            <td><input type="text" id="thursday9" autocomplete="off" th:text="${thursday9}"></td>
+            <td><input type="text" id="friday9" autocomplete="off" th:text="${friday9}"></td>
         </tr>
         <tr>
             <th>10</th>
-            <td th:text="${monday10}"><input type="text"  id="monday10" autocomplete="off"></td>
-            <td th:text="${tuesday10}"><input type="text" id="tuesday10" autocomplete="off"></td>
-            <td th:text="${wednesday10}"><input type="text" id="wednesday10" required autocomplete="off"></td>
-            <td th:text="${thursday10}"><input type="text" id="thursday10" required autocomplete="off"></td>
-            <td th:text="${friday10}"><input type="text" id="friday10" required autocomplete="off"></td>
+            <td><input type="text" id="monday10" autocomplete="off" th:text="${monday10}"></td>
+            <td><input type="text" id="tuesday10" autocomplete="off" th:text="${tuesday10}"></td>
+            <td><input type="text" id="wednesday10" autocomplete="off" th:text="${wednesday10}"></td>
+            <td><input type="text" id="thursday10" autocomplete="off" th:text="${thursday10}"></td>
+            <td><input type="text" id="friday10" autocomplete="off" th:text="${friday10}"></td>
         </tr>
         <tr>
             <th>11</th>
-            <td th:text="${monday11}"><input type="text"  id="monday11" autocomplete="off"></td>
-            <td th:text="${tuesday11}"><input type="text" id="tuesday11" autocomplete="off"></td>
-            <td th:text="${wednesday11}"><input type="text" id="wednesday11" required autocomplete="off"></td>
-            <td th:text="${thursday11}"><input type="text" id="thursday11" required autocomplete="off"></td>
-            <td th:text="${friday11}"><input type="text" id="friday11" required autocomplete="off"></td>
+            <td><input type="text" id="monday11" autocomplete="off" th:text="${monday11}"></td>
+            <td><input type="text" id="tuesday11" autocomplete="off" th:text="${tuesday11}"></td>
+            <td><input type="text" id="wednesday11" autocomplete="off" th:text="${wednesday11}"></td>
+            <td><input type="text" id="thursday11" autocomplete="off" th:text="${thursday11}"></td>
+            <td><input type="text" id="friday11" autocomplete="off" th:text="${friday11}"></td>
         </tr>
         <tr>
             <th>12</th>
-            <td th:text="${monday12}"><input type="text"  id="monday12" autocomplete="off"></td>
-            <td th:text="${tuesday12}"><input type="text" id="tuesday12" autocomplete="off"></td>
-            <td th:text="${wednesday12}"><input type="text" id="wednesday12" required autocomplete="off"></td>
-            <td th:text="${thursday12}"><input type="text" id="thursday12" required autocomplete="off"></td>
-            <td th:text="${friday12}"><input type="text" id="friday12" required autocomplete="off"></td>
+            <td><input type="text" id="monday12" autocomplete="off" th:text="${monday12}"></td>
+            <td><input type="text" id="tuesday12" autocomplete="off" th:text="${tuesday12}"></td>
+            <td><input type="text" id="wednesday12" autocomplete="off" th:text="${wednesday12}"></td>
+            <td><input type="text" id="thursday12" autocomplete="off" th:text="${thursday12}"></td>
+            <td><input type="text" id="friday12" autocomplete="off" th:text="${friday12}"></td>
         </tr>
         <tr>
             <th>13</th>
-            <td th:text="${monday13}"><input type="text"  id="monday13" autocomplete="off"></td>
-            <td th:text="${tuesday13}"><input type="text" id="tuesday13" autocomplete="off"></td>
-            <td th:text="${wednesday13}"><input type="text" id="wednesday13" required autocomplete="off"></td>
-            <td th:text="${thursday13}"><input type="text" id="thursday13" required autocomplete="off"></td>
-            <td th:text="${friday13}"><input type="text" id="friday13" required autocomplete="off"></td>
+            <td><input type="text" id="monday13" autocomplete="off" th:text="${monday13}"></td>
+            <td><input type="text" id="tuesday13" autocomplete="off" th:text="${tuesday13}"></td>
+            <td><input type="text" id="wednesday13" autocomplete="off" th:text="${wednesday13}"></td>
+            <td><input type="text" id="thursday13" autocomplete="off" th:text="${thursday13}"></td>
+            <td><input type="text" id="friday13" autocomplete="off" th:text="${friday13}"></td>
         </tr>
         </tbody>
     </table>
+    <div class="container">
+        <div id="subjectList" class="row">
+            <div class="column" th:each="subject : ${subjects}" th:text="${subject.name} + ${subject.grade}"></div>
+        </div>
+    </div>
 </div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 <script src="admin.js"></script>
 </body>
 </html>

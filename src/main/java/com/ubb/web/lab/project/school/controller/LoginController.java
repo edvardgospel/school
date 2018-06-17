@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.ubb.web.lab.project.school.domain.Role;
+import com.ubb.web.lab.project.school.domain.Subject;
 import com.ubb.web.lab.project.school.domain.User;
 import com.ubb.web.lab.project.school.service.UserManagerService;
 import com.ubb.web.lab.project.school.service.UserValidatorService;
@@ -25,6 +26,7 @@ public class LoginController {
     public static final String ADMIN = "admin";
     public static final String TEACHER = "teacher";
     public static final String USERS = "users";
+    public static final String SUBJECTS = "subjects";
 
     @Autowired
     private UserValidatorService userValidatorService;
@@ -47,9 +49,11 @@ public class LoginController {
         String roleName = role.getName();
         if (roleName.equals(ADMIN)) {
             List<User> users = userManagerService.getUsers();
-            model.addAttribute(USERS,users);
+            List<Subject> subjects = userManagerService.getSubjectsByTeacher(users.get(0).getName());
+            System.out.println("subjects from LoginController:" + subjects);
+            model.addAttribute(USERS, users);
+            model.addAttribute(SUBJECTS, subjects);
         } else if (roleName.equals(TEACHER)) {
-            userManagerService.getSubjects(name);
         }
         return roleName;
     }
