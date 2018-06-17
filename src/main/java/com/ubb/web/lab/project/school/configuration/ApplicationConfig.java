@@ -6,6 +6,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 import com.ubb.web.lab.project.school.dto.RoleEntityToRoleTransformer;
+import com.ubb.web.lab.project.school.dto.UserEntityToUserTransformer;
+import com.ubb.web.lab.project.school.service.UserManagerService;
 import com.ubb.web.lab.project.school.service.UserValidatorService;
 
 @Configuration
@@ -20,5 +22,15 @@ public class ApplicationConfig {
     @Bean
     public RoleEntityToRoleTransformer createRoleEntityToRoleTransformer() {
         return new RoleEntityToRoleTransformer();
+    }
+
+    @Bean
+    public UserManagerService createUserManagerService() {
+        return new UserManagerService();
+    }
+
+    @Bean
+    public UserEntityToUserTransformer createUserEntityToUserTransformer() {
+        return new UserEntityToUserTransformer();
     }
 }

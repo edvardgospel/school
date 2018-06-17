@@ -6,25 +6,30 @@
     <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic">
     <link rel="stylesheet" href="//cdn.rawgit.com/necolas/normalize.css/master/normalize.css">
     <link rel="stylesheet" href="//cdn.rawgit.com/milligram/milligram/master/dist/milligram.min.css">
-    <link rel="stylesheet" href="../static/school.css">
+    <link rel="stylesheet" href="../school.css">
 </head>
 <body>
 <h1>Timetable</h1>
+<div class="popup" id="myPopup">
+    <label for="nameField" class="label-inline">Name</label>
+    <input type="text" placeholder="Enter your name" id="nameField" name="name" required autocomplete="off">
+    <input type="checkbox" id="confirmField">
+    <label class="label-inline" for="confirmField">Make admin</label>
+    <input class="button button-clear" type="button" value="Save" onclick="saveCreateUser()">
+    <input class="button button-clear" type="button" value="Cancel" onclick="cancelCreateUser()">
+</div>
 <div>
     <form>
         <fieldset>
-            <label for="ageRangeField">Select teacher</label>
-            <select id="ageRangeField">
-                <option value="0-13">0-13</option>
-                <option value="14-17">14-17</option>
-                <option value="18-23">18-23</option>
-                <option value="24+">24+</option>
+            <label for="teacher">Select teacher</label>
+            <select id="teacher">
+                <option th:each="user : ${users}" th:text="${user.name}"></option>
             </select>
-            <!--<div class="float-right">-->
-                <!--<input type="checkbox" id="confirmField">-->
-                <!--<label class="label-inline" for="confirmField">Send a copy to yourself</label>-->
-            <!--</div>-->
-            <input class="button-primary" type="submit" value="Send">
+            <input class="button" type="button" value="Save">
+            <input class="button button-outline" type="button" value="Create" onclick="createUser()">
+            <input class="button button-outline" type="button" value="Update" onclick="updateUser(teacher.value)">
+            <input class="button button-outline" type="button" value="Delete" onclick="deleteUser(teacher.value)">
+            <input class="button button-clear float-right" type="button" value="Log out" onclick="logOut()">
         </fieldset>
     </form>
 
@@ -91,5 +96,6 @@
         </tbody>
     </table>
 </div>
+<script src="admin.js"></script>
 </body>
 </html>
