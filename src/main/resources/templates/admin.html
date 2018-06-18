@@ -14,12 +14,13 @@
     <label class="label-inline" for="confirmField">Make admin&nbsp;</label>
     <input type="checkbox" id="confirmField">
     <input type="text" placeholder="Enter new user" id="nameField" name="name" required autocomplete="off">
-    <textarea placeholder="Type in the valid subjects and grades separated by commas (e.g. math2, literature3)" id="commentField"></textarea>
+    <textarea placeholder="Type in the valid subjects and grades separated by commas (e.g. math2, literature3)"
+              id="commentField"></textarea>
     <label class="label-inline">Valid subjects:</label>
-    <textarea id="allSubjects" style="height: 11rem" disabled></textarea>
+    <textarea id="allSubjects" style="height: 12rem" disabled></textarea>
     <br>
     <input class="button button-clear float-left" type="button" value="Save"
-           onclick="saveNewUser(nameField.value,confirmField.value)">
+           onclick="saveNewUser(nameField.value,confirmField.checked,commentField.value)">
     <input class="button button-clear float-right" type="button" value="Cancel" onclick="cancelPopup(createPopup)">
 </div>
 <div class="popup" id="updatePopup">

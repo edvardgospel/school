@@ -39,3 +39,21 @@ function teacherChanged(newTeacher) {
         }
     });
 }
+
+function saveNewUser(name,isAdmin,teaching) {
+    var teachingList = teaching.replace(/\s/g,'').split(",");
+    var newTeacher = { "name": name,
+                       "isAdmin": isAdmin,
+                       "teaching": teachingList }
+    var newTeacherStringify = JSON.stringify(newTeacher);
+    $.ajax({
+        url: "/admin/save",
+        type: "post",
+        contentType: "application/json",
+        dataType: "json",
+        data: newTeacherStringify,
+        success: function (ok) {
+            //$("#subjectList").replaceWith(subjects);
+        }
+    });
+}

@@ -50,7 +50,6 @@ public class LoginController {
         if (roleName.equals(ADMIN)) {
             List<User> users = userManagerService.getUsers();
             List<Subject> subjects = userManagerService.getSubjectsByTeacher(users.get(0).getName());
-            System.out.println("subjects from LoginController:" + subjects);
             model.addAttribute(USERS, users);
             model.addAttribute(SUBJECTS, subjects);
         } else if (roleName.equals(TEACHER)) {

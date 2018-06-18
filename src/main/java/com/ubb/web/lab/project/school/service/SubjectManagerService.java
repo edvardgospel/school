@@ -1,13 +1,12 @@
 package com.ubb.web.lab.project.school.service;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-
 import com.ubb.web.lab.project.school.domain.Subject;
 import com.ubb.web.lab.project.school.dto.SubjectEntityToSubjectTransformer;
 import com.ubb.web.lab.project.school.repository.SubjectRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class SubjectManagerService {
 
@@ -23,8 +22,9 @@ public class SubjectManagerService {
     private List<String> getSubjectListWithNameAndGrade(List<Subject> subjects) {
         List<String> strings = new ArrayList<>();
         for (Subject subject : subjects) {
-            strings.add(subject.getName()+subject.getGrade());
+            strings.add(subject.getName() + subject.getGrade());
         }
         return strings;
     }
+
 }

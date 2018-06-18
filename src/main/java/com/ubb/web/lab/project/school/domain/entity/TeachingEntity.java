@@ -2,13 +2,9 @@ package com.ubb.web.lab.project.school.domain.entity;
 
 import java.io.Serializable;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.IdClass;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
+import com.ubb.web.lab.project.school.domain.User;
 import lombok.Data;
 
 @Data
@@ -17,12 +13,12 @@ import lombok.Data;
 @IdClass(TeachingEntity.class)
 public class TeachingEntity implements Serializable {
     @Id
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     private UserEntity userEntity;
 
     @Id
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "subject_id")
     private SubjectEntity subjectEntity;
 }

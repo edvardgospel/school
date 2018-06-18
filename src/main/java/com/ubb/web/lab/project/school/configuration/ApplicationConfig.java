@@ -1,17 +1,14 @@
 package com.ubb.web.lab.project.school.configuration;
 
+import com.ubb.web.lab.project.school.dto.*;
+import com.ubb.web.lab.project.school.service.SubjectManagerService;
+import com.ubb.web.lab.project.school.service.SubjectValidatorService;
+import com.ubb.web.lab.project.school.service.UserManagerService;
+import com.ubb.web.lab.project.school.service.UserValidatorService;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-
-import com.ubb.web.lab.project.school.dto.RoleEntityToRoleTransformer;
-import com.ubb.web.lab.project.school.dto.SubjectEntityToSubjectTransformer;
-import com.ubb.web.lab.project.school.dto.TeachingEntityToTeachingTransformer;
-import com.ubb.web.lab.project.school.dto.UserEntityToUserTransformer;
-import com.ubb.web.lab.project.school.service.SubjectManagerService;
-import com.ubb.web.lab.project.school.service.UserManagerService;
-import com.ubb.web.lab.project.school.service.UserValidatorService;
 
 @Configuration
 @EntityScan("com.ubb.web.lab.project.school.domain.entity")
@@ -48,7 +45,17 @@ public class ApplicationConfig {
     }
 
     @Bean
-    SubjectManagerService createSubjectManagerService() {
+    public SubjectManagerService createSubjectManagerService() {
         return new SubjectManagerService();
+    }
+
+    @Bean
+    public SubjectValidatorService createSubjectValidatorService() {
+        return new SubjectValidatorService();
+    }
+
+    @Bean
+    public NewUserRequestToUserEntityTransformer createNewUserRequestToUserEntityTransformer() {
+        return new NewUserRequestToUserEntityTransformer();
     }
 }

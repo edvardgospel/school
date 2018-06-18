@@ -3,7 +3,7 @@ html {
 }
 
 body {
-    margin: 1rem 20rem 4rem 20rem;
+    margin: 1rem 10rem 4rem 10rem;
 }
 
 /* The actual popup (appears on top) */
@@ -14,8 +14,8 @@ body {
     border-radius: 6px;
     position: absolute;
     top: 8rem;
-    left: 20rem;
-    right: 20rem;
+    left: 10rem;
+    right: 10rem;
     z-index: 1;
     padding: 1.5rem;
 }
