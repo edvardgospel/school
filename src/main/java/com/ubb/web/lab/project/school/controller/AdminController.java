@@ -1,21 +1,17 @@
 package com.ubb.web.lab.project.school.controller;
 
-import java.awt.*;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-
-import com.ubb.web.lab.project.school.domain.User;
+import com.ubb.web.lab.project.school.domain.entity.Subject;
+import com.ubb.web.lab.project.school.domain.entity.User;
 import com.ubb.web.lab.project.school.domain.request.NewUserRequest;
+import com.ubb.web.lab.project.school.service.SubjectManagerService;
 import com.ubb.web.lab.project.school.service.SubjectValidatorService;
+import com.ubb.web.lab.project.school.service.UserManagerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import com.ubb.web.lab.project.school.domain.Subject;
-import com.ubb.web.lab.project.school.service.SubjectManagerService;
-import com.ubb.web.lab.project.school.service.UserManagerService;
+import java.util.List;
 
 @Controller
 @RequestMapping(value = "/admin")

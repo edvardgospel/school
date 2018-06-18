@@ -1,6 +1,6 @@
 package com.ubb.web.lab.project.school.configuration;
 
-import com.ubb.web.lab.project.school.dto.*;
+import com.ubb.web.lab.project.school.dto.NewUserRequestToUserEntityTransformer;
 import com.ubb.web.lab.project.school.service.SubjectManagerService;
 import com.ubb.web.lab.project.school.service.SubjectValidatorService;
 import com.ubb.web.lab.project.school.service.UserManagerService;
@@ -20,28 +20,8 @@ public class ApplicationConfig {
     }
 
     @Bean
-    public RoleEntityToRoleTransformer createRoleEntityToRoleTransformer() {
-        return new RoleEntityToRoleTransformer();
-    }
-
-    @Bean
     public UserManagerService createUserManagerService() {
         return new UserManagerService();
-    }
-
-    @Bean
-    public UserEntityToUserTransformer createUserEntityToUserTransformer() {
-        return new UserEntityToUserTransformer();
-    }
-
-    @Bean
-    public SubjectEntityToSubjectTransformer createSubjectEntityToSubjectTransformer() {
-        return new SubjectEntityToSubjectTransformer();
-    }
-
-    @Bean
-    public TeachingEntityToTeachingTransformer createTeachingEntityToTeachingTransformer() {
-        return new TeachingEntityToTeachingTransformer();
     }
 
     @Bean

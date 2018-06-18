@@ -1,18 +1,11 @@
 package com.ubb.web.lab.project.school.service;
 
-import com.ubb.web.lab.project.school.domain.Subject;
-import com.ubb.web.lab.project.school.domain.Teaching;
-import com.ubb.web.lab.project.school.domain.User;
-import com.ubb.web.lab.project.school.domain.entity.SubjectEntity;
-import com.ubb.web.lab.project.school.domain.entity.TeachingEntity;
-import com.ubb.web.lab.project.school.domain.entity.UserEntity;
+import com.ubb.web.lab.project.school.domain.entity.Subject;
+import com.ubb.web.lab.project.school.domain.entity.Teaching;
+import com.ubb.web.lab.project.school.domain.entity.User;
 import com.ubb.web.lab.project.school.domain.request.NewUserRequest;
 import com.ubb.web.lab.project.school.dto.NewUserRequestToUserEntityTransformer;
-import com.ubb.web.lab.project.school.dto.SubjectEntityToSubjectTransformer;
-import com.ubb.web.lab.project.school.dto.TeachingEntityToTeachingTransformer;
-import com.ubb.web.lab.project.school.dto.UserEntityToUserTransformer;
 import com.ubb.web.lab.project.school.repository.SubjectRepository;
-import com.ubb.web.lab.project.school.repository.TeachingRepository;
 import com.ubb.web.lab.project.school.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -27,29 +20,23 @@ public class UserManagerService {
     private UserRepository userRepository;
 
     @Autowired
-    private TeachingRepository teachingRepository;
-
-    @Autowired
     private SubjectRepository subjectRepository;
-
-    @Autowired
-    private UserEntityToUserTransformer userTransformer;
-
-    @Autowired
-    private SubjectEntityToSubjectTransformer subjectTransformer;
-
-    @Autowired
-    private TeachingEntityToTeachingTransformer teachingTransformer;
 
     @Autowired
     private NewUserRequestToUserEntityTransformer requestToUserEntityTransformer;
 
     public List<User> getUsers() {
-        return userTransformer.transformList(userRepository.findAllByOrderByName());
+        return userRepository.findAllByOrderByName();
     }
 
     public List<Subject> getSubjectsByTeacher(String name) {
-        return getSubjectsByTeachings(teachingTransformer.transformList(teachingRepository.findAllByUserId(userRepository.findByName(name))));
+        User user = userRepository.findByName(name);
+        List<Teaching> teachings = null;/////TODO
+        List<Subject> subjects = new ArrayList<>();
+        for (Teaching teaching : teachings) {
+            subjects.add(teaching.getSubject());
+        }
+        return subjects;
     }
 
     private List<Subject> getSubjectsByTeachings(List<Teaching> teachings) {
@@ -61,12 +48,12 @@ public class UserManagerService {
     }
 
     public void saveNewUser(NewUserRequest newUser) {
-        UserEntity userEntity = requestToUserEntityTransformer.transform(newUser);
-        userRepository.save(userEntity);
+        User user = requestToUserEntityTransformer.transform(newUser);
+        userRepository.save(user);
     }
 
     public void saveNewUserTeachings(NewUserRequest newUser) {
-        UserEntity userEntity = userRepository.findByName(newUser.getName());
+        /*UserEntity userEntity = userRepository.findByName(newUser.getName());
         List<String> teachings = removeDuplicatesFromList(newUser.getTeaching());
         for (String teaching : teachings) {
             String subjectName = getSubjectName(teaching);
@@ -76,8 +63,7 @@ public class UserManagerService {
             entity.setUserEntity(userEntity);
             entity.setSubjectEntity(subjectEntity);
             System.out.println(entity);
-            teachingRepository.saveAndFlush(entity);
-        }
+            teachingRepository.saveAndFlush(entity);*/
     }
 
     private Integer getGrade(String teaching) {

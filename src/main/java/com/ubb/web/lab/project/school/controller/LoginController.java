@@ -1,8 +1,9 @@
 package com.ubb.web.lab.project.school.controller;
 
-import java.util.List;
-import java.util.Objects;
-
+import com.ubb.web.lab.project.school.domain.entity.Subject;
+import com.ubb.web.lab.project.school.domain.entity.User;
+import com.ubb.web.lab.project.school.service.UserManagerService;
+import com.ubb.web.lab.project.school.service.UserValidatorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,11 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.ubb.web.lab.project.school.domain.Role;
-import com.ubb.web.lab.project.school.domain.Subject;
-import com.ubb.web.lab.project.school.domain.User;
-import com.ubb.web.lab.project.school.service.UserManagerService;
-import com.ubb.web.lab.project.school.service.UserValidatorService;
+import java.util.List;
+import java.util.Objects;
 
 @Controller
 @RequestMapping(value = "/login")
@@ -41,19 +39,18 @@ public class LoginController {
 
     @RequestMapping(method = RequestMethod.POST)
     public String login(@RequestParam String name, Model model) {
-        Role role = userValidatorService.validate(name);
+        String role = userValidatorService.validate(name);
         if (Objects.isNull(role)) {
             model.addAttribute(ERROR_MESSAGE, USER_DOES_NOT_EXISTS);
             return LOGIN;
         }
-        String roleName = role.getName();
-        if (roleName.equals(ADMIN)) {
+        if (role.equals(ADMIN)) {
             List<User> users = userManagerService.getUsers();
             List<Subject> subjects = userManagerService.getSubjectsByTeacher(users.get(0).getName());
             model.addAttribute(USERS, users);
             model.addAttribute(SUBJECTS, subjects);
-        } else if (roleName.equals(TEACHER)) {
+        } else if (role.equals(TEACHER)) {
         }
-        return roleName;
+        return role;
     }
 }
