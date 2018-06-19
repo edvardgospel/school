@@ -4,8 +4,9 @@ import com.ubb.web.lab.project.school.domain.entity.Subject;
 import com.ubb.web.lab.project.school.domain.entity.Teaching;
 import com.ubb.web.lab.project.school.domain.entity.User;
 import com.ubb.web.lab.project.school.domain.request.NewUserRequest;
-import com.ubb.web.lab.project.school.dto.NewUserRequestToUserEntityTransformer;
+import com.ubb.web.lab.project.school.dto.NewUserRequestToUserTransformer;
 import com.ubb.web.lab.project.school.repository.SubjectRepository;
+import com.ubb.web.lab.project.school.repository.TeachingRepository;
 import com.ubb.web.lab.project.school.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -23,20 +24,23 @@ public class UserManagerService {
     private SubjectRepository subjectRepository;
 
     @Autowired
-    private NewUserRequestToUserEntityTransformer requestToUserEntityTransformer;
+    private TeachingRepository teachingRepository;
+
+    @Autowired
+    private NewUserRequestToUserTransformer requestToUserTransformer;
+
+    public User loginUser(String name) {
+        return userRepository.findByName(name);
+    }
 
     public List<User> getUsers() {
         return userRepository.findAllByOrderByName();
     }
 
-    public List<Subject> getSubjectsByTeacher(String name) {
+    public List<Subject> getSubjectsByTeacherName(String name) {
         User user = userRepository.findByName(name);
-        List<Teaching> teachings = null;/////TODO
-        List<Subject> subjects = new ArrayList<>();
-        for (Teaching teaching : teachings) {
-            subjects.add(teaching.getSubject());
-        }
-        return subjects;
+
+        return getSubjectsByTeachings(user.getTeachings());
     }
 
     private List<Subject> getSubjectsByTeachings(List<Teaching> teachings) {
@@ -48,37 +52,44 @@ public class UserManagerService {
     }
 
     public void saveNewUser(NewUserRequest newUser) {
-        User user = requestToUserEntityTransformer.transform(newUser);
-        userRepository.save(user);
+        User user = requestToUserTransformer.transform(newUser);
+        List<String> subjects = removeDuplicatesFromList(newUser.getSubjects());
+        List<Teaching> teachings = new ArrayList<>();
+        for (String subjectAndGrade : subjects) {
+            String subjectStr = getSubjectName(subjectAndGrade);
+            Integer grade = getGrade(subjectAndGrade);
+            Subject subject = subjectRepository.findByNameAndGrade(subjectStr, grade);
+            userRepository.save(user);
+            User user1 = userRepository.findByName(user.getName());
+            Teaching teaching = new Teaching();
+            teaching.setUser(user1);
+            teaching.setSubject(subject);
+            teachingRepository.save(teaching);
+            teachings.add(teaching);
+        }
+        user.setTeachings(teachings);
+
     }
 
-    public void saveNewUserTeachings(NewUserRequest newUser) {
-        /*UserEntity userEntity = userRepository.findByName(newUser.getName());
-        List<String> teachings = removeDuplicatesFromList(newUser.getTeaching());
-        for (String teaching : teachings) {
-            String subjectName = getSubjectName(teaching);
-            Integer grade = getGrade(teaching);
-            TeachingEntity entity = new TeachingEntity();
-            SubjectEntity subjectEntity = subjectRepository.findByNameAndGrade(subjectName, grade);
-            entity.setUserEntity(userEntity);
-            entity.setSubjectEntity(subjectEntity);
-            System.out.println(entity);
-            teachingRepository.saveAndFlush(entity);*/
+    public void deleteUser(String name) {
+        User user = userRepository.findByName(name);
+        userRepository.delete(user);
     }
 
-    private Integer getGrade(String teaching) {
-        return Integer.valueOf(teaching.substring(teaching.length() - 1));
+    private Integer getGrade(String subject) {
+        return Integer.valueOf(subject.substring(subject.length() - 1));
     }
 
-    private String getSubjectName(String teaching) {
-        return teaching.substring(0, teaching.length() - 1);
+    private String getSubjectName(String subject) {
+        return subject.substring(0, subject.length() - 1);
     }
 
-    private List<String> removeDuplicatesFromList(List<String> teachings) {
+    private List<String> removeDuplicatesFromList(List<String> strings) {
         Set<String> teachingSet = new HashSet<>();
-        teachingSet.addAll(teachings);
-        teachings.clear();
-        teachings.addAll(teachingSet);
-        return teachings;
+        teachingSet.addAll(strings);
+        strings.clear();
+        strings.addAll(teachingSet);
+        return strings;
     }
+
 }

@@ -8,5 +8,5 @@ import java.util.List;
 public class NewUserRequest {
     private String name;
     private Boolean isAdmin;
-    private List<String> teaching;
+    private List<String> subjects;
 }

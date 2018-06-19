@@ -1,62 +1,47 @@
 CREATE SCHEMA school;
 
-CREATE TABLE school.`role` (
-  id INT NOT NULL AUTO_INCREMENT,
-  name VARCHAR(45) NULL,
-  PRIMARY KEY (id));
-  
 CREATE TABLE school.`user` (
   id INT NOT NULL AUTO_INCREMENT,
-  role_id INT NULL,
-  name VARCHAR(45) NULL,
-  PRIMARY KEY (id),
-  CONSTRAINT role_id
-    FOREIGN KEY (role_id)
-    REFERENCES school.`role` (id));
-	
+  name VARCHAR(45),
+  role VARCHAR(45),
+  PRIMARY KEY (id)
+);
+
 CREATE TABLE school.`subject` (
   id INT NOT NULL AUTO_INCREMENT,
-  name VARCHAR(45) NULL,
-  grade INT NULL,
-  PRIMARY KEY (id));
+  name VARCHAR(45),
+  grade INT,
+  PRIMARY KEY (id)
+);
 
 CREATE TABLE school.`teaching` (
+  id INT NOT NULL AUTO_INCREMENT,
   user_id INT NOT NULL,
   subject_id INT NOT NULL,
-  CONSTRAINT user_id
-    FOREIGN KEY (user_id)
-    REFERENCES school.`user` (id),
-  CONSTRAINT subject_id
-    FOREIGN KEY (subject_id)
-    REFERENCES school.`subject` (id));
-	
+  PRIMARY KEY (id,user_id,subject_id),
+  FOREIGN KEY (user_id) REFERENCES school.`user`(id),
+  FOREIGN KEY (subject_id) REFERENCES school.`subject`(id)
+);
+
 CREATE TABLE school.`timetable` (
   id INT NOT NULL AUTO_INCREMENT,
-  user_id INT NULL,
-  subject_id INT NULL,
-  day INT NULL,
-  time INT NULL,
+  teaching_id INT NOT NULL,
+  day VARCHAR(45),
+  time INT,
   PRIMARY KEY (id),
-  CONSTRAINT userid
-    FOREIGN KEY (user_id)
-    REFERENCES school.`user` (id),
-  CONSTRAINT subjectid
-    FOREIGN KEY (subject_id)
-    REFERENCES school.`subject` (id));
-	
-INSERT INTO role (id,name) VALUES (1,'admin');
-INSERT INTO role (id,name) VALUES (2,'teacher');
+  FOREIGN KEY (teaching_id) REFERENCES school.`teaching`(id)
+);
 
-INSERT INTO user (id,role_id,name) VALUES (1,1,'Eros Edvard');
+INSERT INTO user (id,name,role) VALUES (1,'Edvard Eros','admin');
 
 INSERT INTO subject(id,name,grade) VALUES (1,'math',1);
 INSERT INTO subject(id,name,grade) VALUES (2,'math',2);
 INSERT INTO subject(id,name,grade) VALUES (3,'math',3);
 INSERT INTO subject(id,name,grade) VALUES (4,'math',4);
 INSERT INTO subject(id,name,grade) VALUES (5,'art',1);
-INSERT INTO subject(id,name,grade) VALUES (6,'art',1);
-INSERT INTO subject(id,name,grade) VALUES (7,'art',2);
-INSERT INTO subject(id,name,grade) VALUES (8,'art',3);
+INSERT INTO subject(id,name,grade) VALUES (6,'art',2);
+INSERT INTO subject(id,name,grade) VALUES (7,'art',3);
+INSERT INTO subject(id,name,grade) VALUES (8,'art',4);
 INSERT INTO subject(id,name,grade) VALUES (9,'phisics',1);
 INSERT INTO subject(id,name,grade) VALUES (10,'phisics',2);
 INSERT INTO subject(id,name,grade) VALUES (11,'phisics',3);

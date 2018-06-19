@@ -3,7 +3,7 @@ package com.ubb.web.lab.project.school.dto;
 import com.ubb.web.lab.project.school.domain.entity.User;
 import com.ubb.web.lab.project.school.domain.request.NewUserRequest;
 
-public class NewUserRequestToUserEntityTransformer {
+public class NewUserRequestToUserTransformer {
 
     public static final String ADMIN = "admin";
     public static final String TEACHER = "teacher";

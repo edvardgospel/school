@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @EnableJpaRepositories
 public class SchoolApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(SchoolApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(SchoolApplication.class, args);
+    }
 }

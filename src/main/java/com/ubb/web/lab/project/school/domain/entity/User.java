@@ -3,7 +3,7 @@ package com.ubb.web.lab.project.school.domain.entity;
 import lombok.Data;
 
 import javax.persistence.*;
-import java.util.Set;
+import java.util.List;
 
 @Data
 @Entity
@@ -12,9 +12,11 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
+    @Column(unique = true)
     private String name;
     private String role;
 
     @OneToMany(mappedBy = "user")
-    private Set<Teaching> teachings;
+    private List<Teaching> teachings;
 }

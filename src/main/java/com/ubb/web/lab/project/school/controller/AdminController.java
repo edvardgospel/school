@@ -31,7 +31,7 @@ public class AdminController {
 
     @RequestMapping(method = RequestMethod.POST)
     public String changeTeacher(@RequestParam("name") String name, Model model) {
-        List<Subject> subjects = userManagerService.getSubjectsByTeacher(name);
+        List<Subject> subjects = userManagerService.getSubjectsByTeacherName(name);
         model.addAttribute(SUBJECTS, subjects);
         return "admin :: #subjectList";
     }
@@ -44,17 +44,20 @@ public class AdminController {
 
     @ResponseBody
     @RequestMapping(value = "/save", method = RequestMethod.POST)
-    public Boolean saveUser(@RequestBody NewUserRequest newUser, Model model) {
-        Boolean response;
-        response = subjectValidatorService.isValid(newUser.getTeaching());
-        if (response.booleanValue() == true) {
-            userManagerService.saveNewUser(newUser);
-            userManagerService.saveNewUserTeachings(newUser);
-            List<User> users = userManagerService.getUsers();
-            List<Subject> subjects = userManagerService.getSubjectsByTeacher(users.get(0).getName());
-            model.addAttribute(USERS, users);
-        }
-        return response;
+    public String saveNewUser(@RequestBody NewUserRequest newUser, Model model) {
+        userManagerService.saveNewUser(newUser);
+        List<User> users = userManagerService.getUsers();
+        List<Subject> subjects = userManagerService.getSubjectsByTeacherName(newUser.getName());
+        model.addAttribute(USERS, users);
+        model.addAttribute(SUBJECTS, subjects);
+        return "admin :: #subjectList";
+    }
+
+
+    @RequestMapping(value = "/delete", method = RequestMethod.DELETE)
+    public void deleteUser(@RequestParam("name") String name) {
+System.out.println("name: " + name);
+        userManagerService.deleteUser(name);
     }
 
     @RequestMapping(value = "/logout", method = RequestMethod.GET)

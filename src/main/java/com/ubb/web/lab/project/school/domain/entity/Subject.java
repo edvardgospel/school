@@ -3,7 +3,7 @@ package com.ubb.web.lab.project.school.domain.entity;
 import lombok.Data;
 
 import javax.persistence.*;
-import java.util.Set;
+import java.util.List;
 
 @Data
 @Entity
@@ -16,5 +16,5 @@ public class Subject {
     private Integer grade;
 
     @OneToMany(mappedBy = "subject")
-    private Set<Teaching> teachings;
+    private List<Teaching> teachings;
 }
