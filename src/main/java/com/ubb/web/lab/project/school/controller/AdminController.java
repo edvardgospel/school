@@ -12,13 +12,19 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Objects;
 
 @Controller
-@RequestMapping(value = "/admin")
+@RequestMapping(value = "/user")
 public class AdminController {
 
     public static final String SUBJECTS = "subjects";
     public static final String USERS = "users";
+    public static final String USER_DOES_NOT_EXISTS = "User does not exists.";
+    public static final String ERROR_MESSAGE = "errorMessage";
+    public static final String LOGIN = "login";
+    public static final String ADMIN = "admin";
+    public static final String TEACHER = "teacher";
 
     @Autowired
     private UserManagerService userManagerService;
@@ -30,6 +36,25 @@ public class AdminController {
     private SubjectValidatorService subjectValidatorService;
 
     @RequestMapping(method = RequestMethod.POST)
+    public String login(@RequestParam String name, Model model) {
+        User user = userManagerService.loginUser(name);
+        if (Objects.isNull(user)) {
+            model.addAttribute(ERROR_MESSAGE, USER_DOES_NOT_EXISTS);
+            return LOGIN;
+        }
+
+        String role = user.getRole();
+        if (role.equals(ADMIN)) {
+            List<User> users = userManagerService.getUsers();
+            List<Subject> subjects = userManagerService.getSubjectsByTeacherName(users.get(0).getName());
+            model.addAttribute(USERS, users);
+            model.addAttribute(SUBJECTS, subjects);
+        } else if (role.equals(TEACHER)) {
+        }
+        return role;
+    }
+
+    @RequestMapping(value = "/change", method = RequestMethod.POST)
     public String changeTeacher(@RequestParam("name") String name, Model model) {
         List<Subject> subjects = userManagerService.getSubjectsByTeacherName(name);
         model.addAttribute(SUBJECTS, subjects);
@@ -53,10 +78,9 @@ public class AdminController {
         return "admin :: #subjectList";
     }
 
-
-    @RequestMapping(value = "/delete", method = RequestMethod.DELETE)
-    public void deleteUser(@RequestParam("name") String name) {
-System.out.println("name: " + name);
+    @ResponseBody
+    @RequestMapping(value = "/delete/{name}", method = RequestMethod.DELETE)
+    public void deleteUser(@PathVariable("name") String name) {
         userManagerService.deleteUser(name);
     }
 

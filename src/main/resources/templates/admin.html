@@ -36,7 +36,7 @@
            onclick="cancelPopup(deletePopup)">
 </div>
 <div>
-    <form action="/admin/logout" method="get">
+    <form action="/user/logout" method="get">
         <fieldset>
             <label for="teacher">Select teacher</label>
             <select id="teacher" onchange="teacherChanged(teacher.value)">
@@ -46,7 +46,7 @@
             <input class="button button-outline" type="button" value="Create" onclick="openCreatePopup()">
             <input class="button button-outline" type="button" value="Update" onclick="openUpdatePopup(teacher.value)">
             <input class="button button-outline" type="button" value="Delete" onclick="openDeletePopup(teacher.value)">
-            <input class="button button-clear float-right" type="submit" value="Log out" onclick="logOut()">
+            <input class="button button-clear float-right" type="submit" value="Log out">
         </fieldset>
     </form>
 

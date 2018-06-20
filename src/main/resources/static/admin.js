@@ -1,15 +1,27 @@
 var createPopup = document.getElementById("createPopup");
 var updatePopup = document.getElementById("updatePopup");
 var deletePopup = document.getElementById("deletePopup");
+var subjects = getSubjects();
+var teachers = getTeachers()
 
-function openCreatePopup() {
+
+function getSubjects() {
     $.ajax({
-        url: "/admin/subjects",
+        url: "/user/subjects",
         type: "get",
         success: function (subjects) {
             $("#allSubjects").html(subjects.join(',  '));
         }
     });
+}
+
+function getTeachers() {
+    $("option").each(function() {
+        sessionStorage.setItem($(this).val(),$(this).val());
+    });
+}
+
+function openCreatePopup() {
     createPopup.classList.toggle("show");
 }
 
@@ -18,7 +30,7 @@ function openUpdatePopup(teacher) {
 }
 
 function openDeletePopup(teacher) {
-    $("#deleteLabel").html("Are you sure you want do delete <b>" + teacher + "</b>?");
+    $("#deleteLabel").html("Are you sure you want to delete <b>" + teacher + "</b>?");
     deletePopup.classList.toggle("show");
 }
 
@@ -28,7 +40,7 @@ function cancelPopup(popup) {
 
 function teacherChanged(newTeacher) {
     $.ajax({
-        url: "/admin",
+        url: "/user/change",
         type: "post",
         data: {"name": newTeacher},
         success: function (subjects) {
@@ -44,7 +56,7 @@ function saveNewUser(name,isAdmin,teaching) {
                        "subjects": teachingList }
     var newTeacherStringify = JSON.stringify(newTeacher);
     $.ajax({
-        url: "/admin/save",
+        url: "/user/save",
         type: "post",
         contentType: "application/json",
         dataType: "json",
@@ -53,19 +65,32 @@ function saveNewUser(name,isAdmin,teaching) {
             $("#subjectList").replaceWith(subjects);
         }
     });
-    var teacherSelect = document.getElementById("teacher");
-    var option = document.createElement("option");
-    option.text = name;
-    teacherSelect.add(option);
+    sessionStorage.setItem(name,name);
     createPopup.classList.toggle("show");
 
 }
 
 function deleteUser(name) {
-    console.log(name + " TYPE: " + typeof name)
     $.ajax({
-        url: "/admin/delete",
-        type: "delete",
-        data: {"name": name}
+        url: "/user/delete/"+name,
+        type: "delete"
     });
+    deletePopup.classList.toggle("show");
+    sessionStorage.removeItem(name);
+    var teachers = getTeachersFromSessionStorage();
+    renderTeachers(teachers)
+}
+
+function getTeachersFromSessionStorage() {
+    var values = [],
+        keys = Object.keys(sessionStorage),
+        i = keys.length;
+    while ( i-- ) {
+        values.push(sessionStorage.getItem(keys[i]) );
+    }
+    return values;
+}
+
+function renderTeachers(teachers) {
+    $("#teacher").replaceWith("<select id=\"teacher\" onchange=\"teacherChanged(teacher.value)\"><option th:each=\"user : ${users}\" th:text=\"${user.name}\"></option></select>");
 }

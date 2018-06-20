@@ -17,6 +17,6 @@ public class User {
     private String name;
     private String role;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Teaching> teachings;
 }
