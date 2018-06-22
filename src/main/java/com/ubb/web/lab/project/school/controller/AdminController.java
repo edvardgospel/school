@@ -1,18 +1,22 @@
 package com.ubb.web.lab.project.school.controller;
 
-import com.ubb.web.lab.project.school.domain.entity.Subject;
-import com.ubb.web.lab.project.school.domain.entity.User;
-import com.ubb.web.lab.project.school.domain.request.NewUserRequest;
-import com.ubb.web.lab.project.school.service.SubjectManagerService;
-import com.ubb.web.lab.project.school.service.SubjectValidatorService;
-import com.ubb.web.lab.project.school.service.UserManagerService;
+import java.util.List;
+import java.util.Objects;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.List;
-import java.util.Objects;
+import com.ubb.web.lab.project.school.domain.entity.Subject;
+import com.ubb.web.lab.project.school.domain.entity.User;
+import com.ubb.web.lab.project.school.service.SubjectManagerService;
+import com.ubb.web.lab.project.school.service.SubjectValidatorService;
+import com.ubb.web.lab.project.school.service.UserManagerService;
 
 @Controller
 @RequestMapping(value = "/user")
@@ -37,7 +41,7 @@ public class AdminController {
 
     @RequestMapping(method = RequestMethod.POST)
     public String login(@RequestParam String name, Model model) {
-        User user = userManagerService.loginUser(name);
+        User user = userManagerService.getUser(name);
         if (Objects.isNull(user)) {
             model.addAttribute(ERROR_MESSAGE, USER_DOES_NOT_EXISTS);
             return LOGIN;
@@ -69,13 +73,8 @@ public class AdminController {
 
     @ResponseBody
     @RequestMapping(value = "/save", method = RequestMethod.POST)
-    public String saveNewUser(@RequestBody NewUserRequest newUser, Model model) {
-        userManagerService.saveNewUser(newUser);
-        List<User> users = userManagerService.getUsers();
-        List<Subject> subjects = userManagerService.getSubjectsByTeacherName(newUser.getName());
-        model.addAttribute(USERS, users);
-        model.addAttribute(SUBJECTS, subjects);
-        return "admin :: #subjectList";
+    public Boolean saveNewUser(String name, Boolean isAdmin, String subjects, Model model) {
+        return userManagerService.saveUser(name,isAdmin,subjects);
     }
 
     @ResponseBody

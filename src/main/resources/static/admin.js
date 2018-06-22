@@ -2,26 +2,18 @@ var createPopup = document.getElementById("createPopup");
 var updatePopup = document.getElementById("updatePopup");
 var deletePopup = document.getElementById("deletePopup");
 var subjects = getSubjects();
-var teachers = getTeachers()
-
 
 function getSubjects() {
-    $.ajax({
-        url: "/user/subjects",
-        type: "get",
-        success: function (subjects) {
-            $("#allSubjects").html(subjects.join(',  '));
-        }
-    });
-}
-
-function getTeachers() {
-    $("option").each(function() {
-        sessionStorage.setItem($(this).val(),$(this).val());
-    });
+    $.get("/user/subjects",function (subjects) {
+        $("#allSubjects").html(subjects.join('   '));
+    })
 }
 
 function openCreatePopup() {
+    $("#confirmField").prop("checked", false);
+    $("#nameField").val("");
+    $("#commentField").val("");
+    $("#errorField").val("");
     createPopup.classList.toggle("show");
 }
 
@@ -38,35 +30,26 @@ function cancelPopup(popup) {
     popup.classList.toggle("show");
 }
 
-function teacherChanged(newTeacher) {
-    $.ajax({
-        url: "/user/change",
-        type: "post",
-        data: {"name": newTeacher},
-        success: function (subjects) {
-            $("#subjectList").replaceWith(subjects);
-        }
+$("#teacher").change(function(){
+    $.post("/user/change",
+    {"name": this.value},
+    function (subjects) {
+        $("#subjectList").replaceWith(subjects);
     });
-}
+});
 
-function saveNewUser(name,isAdmin,teaching) {
-    var teachingList = teaching.replace(/\s/g,'').split(",");
-    var newTeacher = { "name": name,
-                       "isAdmin": isAdmin,
-                       "subjects": teachingList }
-    var newTeacherStringify = JSON.stringify(newTeacher);
-    $.ajax({
-        url: "/user/save",
-        type: "post",
-        contentType: "application/json",
-        dataType: "json",
-        data: newTeacherStringify,
-        success: function (subjects) {
-            $("#subjectList").replaceWith(subjects);
-        }
-    });
-    sessionStorage.setItem(name,name);
-    createPopup.classList.toggle("show");
+function createUser(name,isAdmin,teaching) {
+    $.post("/user/save",
+        {"name": name, "isAdmin": isAdmin, "subjects": teaching},
+        function (ok) {
+            if (ok) {
+                $("#teacher").append("<option>" + name + "</option>");
+                createPopup.classList.toggle("show");
+            } else {
+                $("#errorField").append("Invalid user or subject list.");
+            }
+        });
+
 
 }
 
@@ -75,22 +58,8 @@ function deleteUser(name) {
         url: "/user/delete/"+name,
         type: "delete"
     });
+    $("#teacher option").filter(function(){
+        return $.trim($(this).text()) ==  name
+    }).remove();
     deletePopup.classList.toggle("show");
-    sessionStorage.removeItem(name);
-    var teachers = getTeachersFromSessionStorage();
-    renderTeachers(teachers)
-}
-
-function getTeachersFromSessionStorage() {
-    var values = [],
-        keys = Object.keys(sessionStorage),
-        i = keys.length;
-    while ( i-- ) {
-        values.push(sessionStorage.getItem(keys[i]) );
-    }
-    return values;
-}
-
-function renderTeachers(teachers) {
-    $("#teacher").replaceWith("<select id=\"teacher\" onchange=\"teacherChanged(teacher.value)\"><option th:each=\"user : ${users}\" th:text=\"${user.name}\"></option></select>");
 }

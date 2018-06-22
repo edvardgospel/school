@@ -12,15 +12,17 @@
 <h1>Timetable</h1>
 <div class="popup" id="createPopup">
     <label class="label-inline" for="confirmField">Make admin&nbsp;</label>
+    <label class="label-inline float-right" id="errorField"></label>
     <input type="checkbox" id="confirmField">
     <input type="text" placeholder="Enter new user" id="nameField" name="name" required autocomplete="off">
-    <textarea placeholder="Type in the valid subjects and grades separated by commas (e.g. math2, literature3)"
+    <textarea placeholder="Type in the valid subjects and grades separated by spaces (e.g. math2 literature3)"
               id="commentField"></textarea>
     <label class="label-inline">Valid subjects:</label>
     <textarea id="allSubjects" style="height: 12rem" disabled></textarea>
+
     <br>
     <input class="button button-clear float-left" type="button" value="Save"
-           onclick="saveNewUser(nameField.value,confirmField.checked,commentField.value)">
+           onclick="createUser(nameField.value,confirmField.checked,commentField.value)">
     <input class="button button-clear float-right" type="button" value="Cancel" onclick="cancelPopup(createPopup)">
 </div>
 <div class="popup" id="updatePopup">
@@ -39,7 +41,7 @@
     <form action="/user/logout" method="get">
         <fieldset>
             <label for="teacher">Select teacher</label>
-            <select id="teacher" onchange="teacherChanged(teacher.value)">
+            <select id="teacher">
                 <option th:each="user : ${users}" th:text="${user.name}"></option>
             </select>
             <input class="button" type="button" value="Save">
