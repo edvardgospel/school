@@ -20,7 +20,7 @@ import com.ubb.web.lab.project.school.service.UserManagerService;
 
 @Controller
 @RequestMapping(value = "/user")
-public class AdminController {
+public class UserController {
 
     public static final String SUBJECTS = "subjects";
     public static final String USERS = "users";
@@ -72,9 +72,15 @@ public class AdminController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/save", method = RequestMethod.POST)
-    public Boolean saveNewUser(String name, Boolean isAdmin, String subjects, Model model) {
-        return userManagerService.saveUser(name,isAdmin,subjects);
+    @RequestMapping(value = "/create", method = RequestMethod.POST)
+    public Boolean createUser(String name, Boolean isAdmin, String subjects, Model model) {
+        return userManagerService.createUser(name,isAdmin,subjects);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/update", method = RequestMethod.POST)
+    public Boolean updateUser(String name, Boolean isAdmin, String subjects, Model model) {
+        return userManagerService.updateUser(name,isAdmin,subjects);
     }
 
     @ResponseBody

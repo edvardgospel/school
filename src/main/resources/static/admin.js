@@ -1,23 +1,29 @@
 var createPopup = document.getElementById("createPopup");
 var updatePopup = document.getElementById("updatePopup");
 var deletePopup = document.getElementById("deletePopup");
-var subjects = getSubjects();
+var currentSubjects;
+getSubjects();
 
 function getSubjects() {
     $.get("/user/subjects",function (subjects) {
-        $("#allSubjects").html(subjects.join('   '));
+        $(".allSubjects").html(subjects.join("   "));
     })
 }
 
 function openCreatePopup() {
-    $("#confirmField").prop("checked", false);
-    $("#nameField").val("");
-    $("#commentField").val("");
-    $("#errorField").val("");
+    $("#createConfirmField").prop("checked", false);
+    $("#createNameField").val("");
+    $("#createCommentField").val("");
+    $("#createErrorField").val("");
     createPopup.classList.toggle("show");
 }
 
 function openUpdatePopup(teacher) {
+    $("#updateConfirmField").prop("checked", false);
+    $("#updateCommentField").val("");
+    $("#updateErrorField").val("");
+    $("#updateLabel").html("Update <b>" + teacher + "</b>");
+    $(".currentSubjects").html(currentSubjects);
     updatePopup.classList.toggle("show");
 }
 
@@ -30,27 +36,40 @@ function cancelPopup(popup) {
     popup.classList.toggle("show");
 }
 
-$("#teacher").change(function(){
+function teacherChanged(teacher) {
     $.post("/user/change",
-    {"name": this.value},
+    {"name": teacher},
     function (subjects) {
         $("#subjectList").replaceWith(subjects);
+        currentSubjects = $(".column").text();
+        currentSubjects = currentSubjects.replace(/([\d])/g,"$1   ");
     });
-});
+}
 
 function createUser(name,isAdmin,teaching) {
-    $.post("/user/save",
-        {"name": name, "isAdmin": isAdmin, "subjects": teaching},
-        function (ok) {
-            if (ok) {
-                $("#teacher").append("<option>" + name + "</option>");
-                createPopup.classList.toggle("show");
-            } else {
-                $("#errorField").append("Invalid user or subject list.");
-            }
-        });
+    $.post("/user/create",
+    {"name": name, "isAdmin": isAdmin, "subjects": teaching},
+    function (ok) {
+        if (ok) {
+            $("#teacher").append("<option>" + name + "</option>");
+            createPopup.classList.toggle("show");
+        } else {
+            $("#createErrorField").append("Invalid user or subject list.");
+        }
+    });
+}
 
-
+function updateUser(name,isAdmin,teaching) {
+    $.post("/user/update",
+    {"name": name, "isAdmin": isAdmin, "subjects": teaching},
+    function (ok) {
+        if (ok) {
+            teacherChanged(name);
+            updatePopup.classList.toggle("show");
+        } else {
+            $("#updateErrorField").append("Invalid subject list.");
+        }
+    });
 }
 
 function deleteUser(name) {

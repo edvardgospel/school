@@ -3,6 +3,7 @@ package com.ubb.web.lab.project.school.service;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,16 +29,31 @@ public class UserManagerService {
     @Autowired
     private SubjectManagerService subjectManagerService;
 
-    public Boolean saveUser(String name, Boolean isAdmin, String subjectsStr) {
+    public Boolean createUser(String name, Boolean isAdmin, String subjectsStr) {
         List<String> subjects = subjectManagerService.split(subjectsStr);
         if (nameIsValid(name) && subjectManagerService.subjectsAreValid(subjects)) {
-            saveNewUser(name, isAdmin, subjects);
+            saveUser(name, isAdmin, subjects);
             return true;
         }
         return false;
     }
 
-    private void saveNewUser(String name, Boolean isAdmin, List<String> subjects) {
+    public Boolean updateUser(String name, Boolean isAdmin, String subjectsStr) {
+        List<String> subjects = subjectManagerService.split(subjectsStr);
+        if (nameExists(name) && subjectManagerService.subjectsAreValid(subjects)) {
+            deleteUser(name);
+            saveUser(name, isAdmin, subjects);
+            return true;
+        }
+        return false;
+    }
+
+    private Boolean nameExists(String name) {
+        return Objects.nonNull(getUser(name));
+    }
+
+
+    private void saveUser(String name, Boolean isAdmin, List<String> subjects) {
         User user = new User();
         user.setName(name);
         if (isAdmin) {
@@ -53,6 +69,7 @@ public class UserManagerService {
             Teaching teaching = new Teaching();
             teaching.setUser(user);
             teaching.setSubject(subject);
+            teachingRepository.save(teaching);
             teachings.add(teaching);
         }
         user.setTeachings(teachings);
@@ -110,5 +127,5 @@ public class UserManagerService {
         strings.addAll(teachingSet);
         return strings;
     }
-
+    
 }
