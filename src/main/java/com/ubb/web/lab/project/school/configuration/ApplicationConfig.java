@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 import com.ubb.web.lab.project.school.service.SubjectManagerService;
 import com.ubb.web.lab.project.school.service.SubjectValidatorService;
+import com.ubb.web.lab.project.school.service.TimetableManagerService;
 import com.ubb.web.lab.project.school.service.UserManagerService;
 
 @Configuration
@@ -29,4 +30,8 @@ public class ApplicationConfig {
         return new SubjectValidatorService();
     }
 
+    @Bean
+    public TimetableManagerService createTimetableManagerService() {
+        return new TimetableManagerService();
+    }
 }

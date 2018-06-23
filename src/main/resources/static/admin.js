@@ -3,6 +3,7 @@ var updatePopup = document.getElementById("updatePopup");
 var deletePopup = document.getElementById("deletePopup");
 var currentSubjects;
 getSubjects();
+sessionStorage.setItem("userName",$("#userName").val());
 
 function getSubjects() {
     $.get("/user/subjects",function (subjects) {
@@ -28,8 +29,16 @@ function openUpdatePopup(teacher) {
 }
 
 function openDeletePopup(teacher) {
-    $("#deleteLabel").html("Are you sure you want to delete <b>" + teacher + "</b>?");
-    deletePopup.classList.toggle("show");
+    console.log(teacher);
+    var val = document.getElementById("#userName");//TODO
+    console.log(val);
+    if (sessionStorage.getItem("userName") == teacher) {
+        $("#deleteLabel").html("Can't delete <b>" + teacher + "</b>.");
+        $("#deletebutton").prop("disabled",true);
+    } else {
+        $("#deleteLabel").html("Are you sure you want to delete <b>" + teacher + "</b>?");
+        deletePopup.classList.toggle("show");
+    }
 }
 
 function cancelPopup(popup) {
