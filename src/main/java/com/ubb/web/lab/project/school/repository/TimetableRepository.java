@@ -7,4 +7,6 @@ import com.ubb.web.lab.project.school.domain.entity.Timetable;
 
 public interface TimetableRepository extends JpaRepository<Timetable, Integer> {
     void deleteByTeaching(Teaching teaching);
+
+    Timetable findByTeaching(Teaching teaching);
 }

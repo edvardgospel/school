@@ -20,7 +20,7 @@ body {
     padding: 1.5rem;
 }
 
-th {
+th, td {
     text-align: center;
 }
 

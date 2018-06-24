@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ubb.web.lab.project.school.domain.entity.Subject;
+import com.ubb.web.lab.project.school.domain.entity.Timetable;
 import com.ubb.web.lab.project.school.domain.entity.User;
 import com.ubb.web.lab.project.school.domain.request.TimetableRequest;
 import com.ubb.web.lab.project.school.service.SubjectManagerService;
@@ -58,14 +59,24 @@ public class UserController {
 
         String role = user.getRole();
         httpSession.setAttribute(USERNAME, name);
+        List<User> users = userManagerService.getUsers();
+        String selection = null;
         if (role.equals(ADMIN)) {
-            List<User> users = userManagerService.getUsers();
-            List<Subject> subjects = userManagerService.getSubjectsByTeacherName(users.get(0).getName());
-            model.addAttribute(USERS, users);
-            model.addAttribute(SUBJECTS, subjects);
-            model.addAttribute(USERNAME, name);
+            selection = users.get(0).getName();
         } else if (role.equals(TEACHER)) {
+            selection = user.getName();
         }
+
+        List<Subject> subjects = userManagerService.getSubjectsByTeacherName(selection);
+        List<Timetable> timetables = timetableManagerService.getTimetablesByTeacherName(selection);
+        for (Timetable timetable : timetables) {
+            if (Objects.nonNull(timetable)) {
+                model.addAttribute(timetable.getDay() + timetable.getTime(), timetable.getTeaching().getSubject().getName() + timetable.getTeaching().getSubject().getGrade());
+            }
+        }
+        model.addAttribute(USERS, users);
+        model.addAttribute(SUBJECTS, subjects);
+        model.addAttribute(USERNAME, name);
         return role;
     }
 

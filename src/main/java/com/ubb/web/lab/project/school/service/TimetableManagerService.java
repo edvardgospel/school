@@ -1,6 +1,7 @@
 package com.ubb.web.lab.project.school.service;
 
 import java.sql.Time;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -121,5 +122,15 @@ public class TimetableManagerService {
         Teaching teaching = teachingRepository.findByUserAndSubject(user, subj);
         timetable.setTeaching(teaching);
         timetableRepository.save(timetable);
+    }
+
+    public List<Timetable> getTimetablesByTeacherName(String name) {
+        List<Timetable> timetables = new ArrayList<>();
+        User user = userManagerService.getUser(name);
+        List<Teaching> teachings = teachingRepository.findAllByUser(user);
+        for (Teaching teaching : teachings) {
+            timetables.add(timetableRepository.findByTeaching(teaching));
+        }
+        return timetables;
     }
 }

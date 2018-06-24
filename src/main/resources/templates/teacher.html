@@ -9,7 +9,11 @@
     <link rel="stylesheet" href="../school.css">
 </head>
 <body>
-<h1>Timetable</h1>
+<h1 class="label-inline">Timetable</h1>
+<h6 id="userName" class="label-inline float-right" th:text="${userName}"></h6>
+<form action="/user/logout" method="get" id="form">
+    <input class="label-inline button button-clear" type="submit" value="Log out">
+</form>
 <table>
     <thead>
     <tr>
@@ -72,5 +76,11 @@
     </tr>
     </tbody>
 </table>
+<br>
+<div class="container">
+    <div id="subjectList" class="row">
+        <div class="column" th:each="subject : ${subjects}" th:text="${subject.name} + ${subject.grade}"></div>
+    </div>
+</div>
 </body>
 </html>
