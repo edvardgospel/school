@@ -11,9 +11,6 @@
 <body>
 <h1 class="label-inline">Timetable</h1>
 <h6 id="userName" class="label-inline float-right" th:text="${userName}"></h6>
-<form action="/user/logout" method="get" id="form">
-    <input class="label-inline button button-clear" type="submit" value="Log out">
-</form>
 <table>
     <thead>
     <tr>
@@ -82,5 +79,9 @@
         <div class="column" th:each="subject : ${subjects}" th:text="${subject.name} + ${subject.grade}"></div>
     </div>
 </div>
+<br>
+<form action="/user/logout" method="get" id="form">
+    <input class="button button-clear float-right" type="submit" value="Log out">
+</form>
 </body>
 </html>

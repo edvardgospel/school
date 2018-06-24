@@ -1,6 +1,5 @@
 package com.ubb.web.lab.project.school.service;
 
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -129,7 +128,11 @@ public class TimetableManagerService {
         User user = userManagerService.getUser(name);
         List<Teaching> teachings = teachingRepository.findAllByUser(user);
         for (Teaching teaching : teachings) {
-            timetables.add(timetableRepository.findByTeaching(teaching));
+            List<Timetable> timetables1 = timetableRepository.findByTeaching(teaching);
+            for (Timetable timeable1 : timetables1) {
+                timetables.add(timeable1);
+            }
+
         }
         return timetables;
     }
