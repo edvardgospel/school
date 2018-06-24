@@ -91,3 +91,73 @@ function deleteUser(name) {
     }).remove();
     deletePopup.classList.toggle("show");
 }
+
+
+function saveTimetable() {
+    var timetableRequest = timetableRequestBuilder();
+    $.ajax({
+        url: "/user/timetable",
+        type: "post",
+        contentType: "application/json",
+        dataType: "json",
+        data: timetableRequest,
+        success: function (ok) {
+                             if (ok) {
+                                 $("#saveFeedback").html("<b>Timetable</b> saved.");
+                             } else {
+                                 $("#saveFeedback").html("Invalid subjects, please double-check.");
+                             }
+                             setTimeout(function(){ $("#saveFeedback").html("&nbsp;"); },3000)
+                         }
+    });
+}
+
+function timetableRequestBuilder() {
+
+    var json = {};
+
+    json.name = $("#teacher").val();
+
+    json.monday = [];
+    json.tuesday = [];
+    json.wednesday = [];
+    json.thursday = [];
+    json.friday = [];
+
+    json.monday[0] = $("#monday8").val();
+    json.monday[1] = $("#monday9").val();
+    json.monday[2] = $("#monday10").val();
+    json.monday[3] = $("#monday11").val();
+    json.monday[4] = $("#monday12").val();
+    json.monday[5] = $("#monday13").val();
+
+    json.tuesday[0] = $("#tuesday8").val();
+    json.tuesday[1] = $("#tuesday9").val();
+    json.tuesday[2] = $("#tuesday10").val();
+    json.tuesday[3] = $("#tuesday11").val();
+    json.tuesday[4] = $("#tuesday12").val();
+    json.tuesday[5] = $("#tuesday13").val();
+
+    json.wednesday[0] = $("#wednesday8").val();
+    json.wednesday[1] = $("#wednesday9").val();
+    json.wednesday[2] = $("#wednesday10").val();
+    json.wednesday[3] = $("#wednesday11").val();
+    json.wednesday[4] = $("#wednesday12").val();
+    json.wednesday[5] = $("#wednesday13").val();
+
+    json.thursday[0] = $("#thursday8").val();
+    json.thursday[1] = $("#thursday9").val();
+    json.thursday[2] = $("#thursday10").val();
+    json.thursday[3] = $("#thursday11").val();
+    json.thursday[4] = $("#thursday12").val();
+    json.thursday[5] = $("#thursday13").val();
+
+    json.friday[0] = $("#friday8").val();
+    json.friday[1] = $("#friday9").val();
+    json.friday[2] = $("#friday10").val();
+    json.friday[3] = $("#friday11").val();
+    json.friday[4] = $("#friday12").val();
+    json.friday[5] = $("#friday13").val();
+
+    return JSON.stringify(json);
+}

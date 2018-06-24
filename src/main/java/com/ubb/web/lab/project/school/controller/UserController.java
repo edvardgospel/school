@@ -6,7 +6,6 @@ import java.util.Objects;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -107,10 +106,9 @@ public class UserController {
         return "redirect:/";
     }
 
+    @ResponseBody
     @RequestMapping(value = "/timetable", method = RequestMethod.POST)
-    public String timetable(TimetableRequest timetable) {
-        System.out.println(timetable.toString());
-        //timetableManagerService.saveTimetables();
-        return ADMIN;
+    public Boolean timetable(@RequestBody TimetableRequest timetable) {
+        return timetableManagerService.saveTimetables(timetable);
     }
 }

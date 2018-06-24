@@ -20,9 +20,6 @@ public class SubjectManagerService {
 
     public Boolean subjectsAreValid(List<String> subjects) {
         List<String> allSubjects = getSubjectsWithNameAndGrade();
-        System.out.println(subjects);
-        System.out.println();
-        System.out.println(allSubjects);
         if (allSubjects.containsAll(subjects)) {
             return true;
         }
@@ -33,7 +30,7 @@ public class SubjectManagerService {
         return Arrays.asList(subjectsStr.trim().split(" +"));
     }
 
-    private List<String> getSubjectListWithNameAndGrade(List<Subject> subjects) {
+    public List<String> getSubjectListWithNameAndGrade(List<Subject> subjects) {
         List<String> strings = new ArrayList<>();
         for (Subject subject : subjects) {
             strings.add(subject.getName() + subject.getGrade());

@@ -95,7 +95,6 @@ public class UserManagerService {
 
     public List<Subject> getSubjectsByTeacherName(String name) {
         User user = userRepository.findByName(name);
-
         return getSubjectsByTeachings(user.getTeachings());
     }
 
@@ -112,11 +111,11 @@ public class UserManagerService {
         userRepository.delete(user);
     }
 
-    private Integer getGrade(String subject) {
+    public Integer getGrade(String subject) {
         return Integer.valueOf(subject.substring(subject.length() - 1));
     }
 
-    private String getSubjectName(String subject) {
+    public String getSubjectName(String subject) {
         return subject.substring(0, subject.length() - 1);
     }
 

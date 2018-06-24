@@ -21,6 +21,6 @@ public class Teaching {
     @JoinColumn(name = "subject_id")
     private Subject subject;
 
-    @OneToMany(mappedBy = "teaching")
+    @OneToMany(mappedBy = "teaching", cascade = CascadeType.ALL)
     private List<Timetable> timetables;
 }
