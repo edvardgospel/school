@@ -24,6 +24,10 @@ th, td {
     text-align: center;
 }
 
+td > input {
+    text-align: center;
+}
+
 textarea {
     resize: none;
 }

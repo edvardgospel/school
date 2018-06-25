@@ -46,13 +46,26 @@ function cancelPopup(popup) {
 }
 
 function teacherChanged(teacher) {
-    $.post("/user/change",
-    {"name": teacher},
-    function (subjects) {
-        $("#subjectList").replaceWith(subjects);
-        currentSubjects = $(".column").text();
-        currentSubjects = currentSubjects.replace(/([\d])/g,"$1   ");
-    });
+    changeSubjectList(teacher);
+    changeTimetable(teacher);
+}
+
+function changeSubjectList(teacher) {
+    $.post("/user/change/subjects",
+        {"name": teacher},
+        function (subjects) {
+            $("#subjectList").replaceWith(subjects);
+            currentSubjects = $(".column").text();
+            currentSubjects = currentSubjects.replace(/([\d])/g,"$1   ");
+        });
+}
+
+function changeTimetable(teacher) {
+    $.post("/user/change/timetable",
+        {"name": teacher},
+        function (timetable) {
+            $("#timetable").replaceWith(timetable);
+        });
 }
 
 function createUser(name,isAdmin,teaching) {
@@ -124,40 +137,40 @@ function timetableRequestBuilder() {
     json.thursday = [];
     json.friday = [];
 
-    json.monday[0] = $("#monday8").val();
-    json.monday[1] = $("#monday9").val();
-    json.monday[2] = $("#monday10").val();
-    json.monday[3] = $("#monday11").val();
-    json.monday[4] = $("#monday12").val();
-    json.monday[5] = $("#monday13").val();
+    json.monday[0] = $("#monday8").val().trim();
+    json.monday[1] = $("#monday9").val().trim();
+    json.monday[2] = $("#monday10").val().trim();
+    json.monday[3] = $("#monday11").val().trim();
+    json.monday[4] = $("#monday12").val().trim();
+    json.monday[5] = $("#monday13").val().trim();
 
-    json.tuesday[0] = $("#tuesday8").val();
-    json.tuesday[1] = $("#tuesday9").val();
-    json.tuesday[2] = $("#tuesday10").val();
-    json.tuesday[3] = $("#tuesday11").val();
-    json.tuesday[4] = $("#tuesday12").val();
-    json.tuesday[5] = $("#tuesday13").val();
+    json.tuesday[0] = $("#tuesday8").val().trim();
+    json.tuesday[1] = $("#tuesday9").val().trim();
+    json.tuesday[2] = $("#tuesday10").val().trim();
+    json.tuesday[3] = $("#tuesday11").val().trim();
+    json.tuesday[4] = $("#tuesday12").val().trim();
+    json.tuesday[5] = $("#tuesday13").val().trim();
 
-    json.wednesday[0] = $("#wednesday8").val();
-    json.wednesday[1] = $("#wednesday9").val();
-    json.wednesday[2] = $("#wednesday10").val();
-    json.wednesday[3] = $("#wednesday11").val();
-    json.wednesday[4] = $("#wednesday12").val();
-    json.wednesday[5] = $("#wednesday13").val();
+    json.wednesday[0] = $("#wednesday8").val().trim();
+    json.wednesday[1] = $("#wednesday9").val().trim();
+    json.wednesday[2] = $("#wednesday10").val().trim();
+    json.wednesday[3] = $("#wednesday11").val().trim();
+    json.wednesday[4] = $("#wednesday12").val().trim();
+    json.wednesday[5] = $("#wednesday13").val().trim();
 
-    json.thursday[0] = $("#thursday8").val();
-    json.thursday[1] = $("#thursday9").val();
-    json.thursday[2] = $("#thursday10").val();
-    json.thursday[3] = $("#thursday11").val();
-    json.thursday[4] = $("#thursday12").val();
-    json.thursday[5] = $("#thursday13").val();
+    json.thursday[0] = $("#thursday8").val().trim();
+    json.thursday[1] = $("#thursday9").val().trim();
+    json.thursday[2] = $("#thursday10").val().trim();
+    json.thursday[3] = $("#thursday11").val().trim();
+    json.thursday[4] = $("#thursday12").val().trim();
+    json.thursday[5] = $("#thursday13").val().trim();
 
-    json.friday[0] = $("#friday8").val();
-    json.friday[1] = $("#friday9").val();
-    json.friday[2] = $("#friday10").val();
-    json.friday[3] = $("#friday11").val();
-    json.friday[4] = $("#friday12").val();
-    json.friday[5] = $("#friday13").val();
+    json.friday[0] = $("#friday8").val().trim();
+    json.friday[1] = $("#friday9").val().trim();
+    json.friday[2] = $("#friday10").val().trim();
+    json.friday[3] = $("#friday11").val().trim();
+    json.friday[4] = $("#friday12").val().trim();
+    json.friday[5] = $("#friday13").val().trim();
 
     return JSON.stringify(json);
 }

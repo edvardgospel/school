@@ -67,7 +67,7 @@
         </fieldset>
     </form>
     <label id="saveFeedback" class="label-inline">&nbsp;</label>
-    <table>
+    <table id="timetable">
         <thead>
         <tr>
             <th>Time</th>
@@ -121,11 +121,11 @@
         </tr>
         <tr>
             <th>13</th>
-            <td><input type="text" id="monday13" autocomplete="off" th:text="${monday13}"></td>
-            <td><input type="text" id="tuesday13" autocomplete="off" th:text="${tuesday13}"></td>
-            <td><input type="text" id="wednesday13" autocomplete="off" th:text="${wednesday13}"></td>
-            <td><input type="text" id="thursday13" autocomplete="off" th:text="${thursday13}"></td>
-            <td><input type="text" id="friday13" autocomplete="off" th:text="${friday13}"></td>
+            <td><input type="text" id="monday13" autocomplete="off" th:value="${monday13}"></td>
+            <td><input type="text" id="tuesday13" autocomplete="off" th:value="${tuesday13}"></td>
+            <td><input type="text" id="wednesday13" autocomplete="off" th:value="${wednesday13}"></td>
+            <td><input type="text" id="thursday13" autocomplete="off" th:value="${thursday13}"></td>
+            <td><input type="text" id="friday13" autocomplete="off" th:value="${friday13}"></td>
         </tr>
         </tbody>
     </table>

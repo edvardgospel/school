@@ -80,11 +80,22 @@ public class UserController {
         return role;
     }
 
-    @RequestMapping(value = "/change", method = RequestMethod.POST)
-    public String changeTeacher(@RequestParam("name") String name, Model model) {
+    @RequestMapping(value = "/change/subjects", method = RequestMethod.POST)
+    public String changeSubjects(@RequestParam("name") String name, Model model) {
         List<Subject> subjects = userManagerService.getSubjectsByTeacherName(name);
         model.addAttribute(SUBJECTS, subjects);
         return "admin :: #subjectList";
+    }
+
+    @RequestMapping(value = "/change/timetable", method = RequestMethod.POST)
+    public String changeTimetable(@RequestParam("name") String name, Model model) {
+        List<Timetable> timetables = timetableManagerService.getTimetablesByTeacherName(name);
+        for (Timetable timetable : timetables) {
+            if (Objects.nonNull(timetable)) {
+                model.addAttribute(timetable.getDay() + timetable.getTime(), timetable.getTeaching().getSubject().getName() + timetable.getTeaching().getSubject().getGrade());
+            }
+        }
+        return "admin :: #timetable";
     }
 
     @ResponseBody
@@ -119,7 +130,7 @@ public class UserController {
 
     @ResponseBody
     @RequestMapping(value = "/timetable", method = RequestMethod.POST)
-    public Boolean timetable(@RequestBody TimetableRequest timetable) {
+    public Boolean saveTimetable(@RequestBody TimetableRequest timetable) {
         return timetableManagerService.saveTimetables(timetable);
     }
 }
