@@ -7,8 +7,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 public class HomeController {
 
-    @RequestMapping(value = "/", method = RequestMethod.GET)
+    public static final String HOME = "home";
+    public static final String SLASH = "/";
+
+    @RequestMapping(value = SLASH, method = RequestMethod.GET)
     public String home() {
-        return "home";
+        return HOME;
     }
 }

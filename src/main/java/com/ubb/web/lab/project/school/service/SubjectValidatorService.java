@@ -1,8 +1,8 @@
 package com.ubb.web.lab.project.school.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
 import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class SubjectValidatorService {
 
@@ -10,7 +10,6 @@ public class SubjectValidatorService {
     private SubjectManagerService subjectManagerService;
 
     public Boolean isValid(List<String> subjects) {
-        Boolean valid = true;
         List<String> allSubjects = subjectManagerService.getSubjectsWithNameAndGrade();
         return allSubjects.containsAll(subjects);
     }

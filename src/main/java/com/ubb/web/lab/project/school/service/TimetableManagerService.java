@@ -12,10 +12,7 @@ import com.ubb.web.lab.project.school.domain.entity.Teaching;
 import com.ubb.web.lab.project.school.domain.entity.Timetable;
 import com.ubb.web.lab.project.school.domain.entity.User;
 import com.ubb.web.lab.project.school.domain.request.TimetableRequest;
-import com.ubb.web.lab.project.school.repository.SubjectRepository;
-import com.ubb.web.lab.project.school.repository.TeachingRepository;
 import com.ubb.web.lab.project.school.repository.TimetableRepository;
-import com.ubb.web.lab.project.school.repository.UserRepository;
 
 @Transactional
 public class TimetableManagerService {
@@ -27,16 +24,10 @@ public class TimetableManagerService {
     private SubjectManagerService subjectManagerService;
 
     @Autowired
-    private TeachingRepository teachingRepository;
-
-    @Autowired
-    private UserRepository userRepository;
+    private TeachingManagerService teachingManagerService;
 
     @Autowired
     private TimetableRepository timetableRepository;
-
-    @Autowired
-    private SubjectRepository subjectRepository;
 
     public Boolean saveTimetables(TimetableRequest timetable) {
         if (timetableIsValid(timetable)) {
@@ -69,8 +60,8 @@ public class TimetableManagerService {
     }
 
     private void deleteTimetable(TimetableRequest timetable) {
-        User user = userRepository.findByName(timetable.getName());
-        List<Teaching> teachings = teachingRepository.findAllByUser(user);
+        User user = userManagerService.getUser(timetable.getName());
+        List<Teaching> teachings = teachingManagerService.getTeachingsByUser(user);
         for (Teaching teaching : teachings) {
             timetableRepository.deleteByTeaching(teaching);
         }
@@ -116,9 +107,9 @@ public class TimetableManagerService {
         Integer grade = userManagerService.getGrade(subject);
         timetable.setDay(day);
         timetable.setTime(time);
-        User user = userRepository.findByName(name);
-        Subject subj = subjectRepository.findByNameAndGrade(subjectName, grade);
-        Teaching teaching = teachingRepository.findByUserAndSubject(user, subj);
+        User user = userManagerService.getUser(name);
+        Subject subj = subjectManagerService.getSubjectByNameAndGrade(subjectName, grade);
+        Teaching teaching = teachingManagerService.getTeachingByUserAndSubject(user, subj);
         timetable.setTeaching(teaching);
         timetableRepository.save(timetable);
     }
@@ -126,7 +117,7 @@ public class TimetableManagerService {
     public List<Timetable> getTimetablesByTeacherName(String name) {
         List<Timetable> timetables = new ArrayList<>();
         User user = userManagerService.getUser(name);
-        List<Teaching> teachings = teachingRepository.findAllByUser(user);
+        List<Teaching> teachings = teachingManagerService.getTeachingsByUser(user);
         for (Teaching teaching : teachings) {
             List<Timetable> timetables1 = timetableRepository.findByTeaching(teaching);
             for (Timetable timeable1 : timetables1) {

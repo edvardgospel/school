@@ -1,8 +1,8 @@
 package com.ubb.web.lab.project.school.service;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -31,11 +31,10 @@ public class SubjectManagerService {
     }
 
     public List<String> getSubjectListWithNameAndGrade(List<Subject> subjects) {
-        List<String> strings = new ArrayList<>();
-        for (Subject subject : subjects) {
-            strings.add(subject.getName() + subject.getGrade());
-        }
-        return strings;
+        return subjects.stream().map(subject -> subject.getName() + subject.getGrade()).collect(Collectors.toList());
     }
 
+    public Subject getSubjectByNameAndGrade(String subjectName, Integer grade) {
+        return subjectRepository.findByNameAndGrade(subjectName, grade);
+    }
 }

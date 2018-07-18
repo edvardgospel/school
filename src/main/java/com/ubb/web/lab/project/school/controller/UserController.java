@@ -36,6 +36,18 @@ public class UserController {
     public static final String ADMIN = "admin";
     public static final String TEACHER = "teacher";
     public static final String USERNAME = "userName";
+    public static final String CHANGE_SUBJECTS = "/change/subjects";
+    public static final String ADMIN_TIMETABLE = "admin :: #timetable";
+    public static final String ADMIN_SUBJECT_LIST = "admin :: #subjectList";
+    public static final String CHANGE_TIMETABLE = "/change/timetable";
+    public static final String CREATE = "/create";
+    public static final String SUBJECTS1 = "/subjects";
+    public static final String UPDATE = "/update";
+    public static final String DELETE_NAME = "/delete/{name}";
+    public static final String LOGOUT = "/logout";
+    public static final String REDIRECT = "redirect:/";
+    public static final String TIMETABLE = "/timetable";
+    public static final String NAME = "name";
 
     @Autowired
     private UserManagerService userManagerService;
@@ -80,56 +92,56 @@ public class UserController {
         return role;
     }
 
-    @RequestMapping(value = "/change/subjects", method = RequestMethod.POST)
-    public String changeSubjects(@RequestParam("name") String name, Model model) {
+    @RequestMapping(value = CHANGE_SUBJECTS, method = RequestMethod.POST)
+    public String changeSubjects(@RequestParam(NAME) String name, Model model) {
         List<Subject> subjects = userManagerService.getSubjectsByTeacherName(name);
         model.addAttribute(SUBJECTS, subjects);
-        return "admin :: #subjectList";
+        return ADMIN_SUBJECT_LIST;
     }
 
-    @RequestMapping(value = "/change/timetable", method = RequestMethod.POST)
-    public String changeTimetable(@RequestParam("name") String name, Model model) {
+    @RequestMapping(value = CHANGE_TIMETABLE, method = RequestMethod.POST)
+    public String changeTimetable(@RequestParam(NAME) String name, Model model) {
         List<Timetable> timetables = timetableManagerService.getTimetablesByTeacherName(name);
         for (Timetable timetable : timetables) {
             if (Objects.nonNull(timetable)) {
                 model.addAttribute(timetable.getDay() + timetable.getTime(), timetable.getTeaching().getSubject().getName() + timetable.getTeaching().getSubject().getGrade());
             }
         }
-        return "admin :: #timetable";
+        return ADMIN_TIMETABLE;
     }
 
     @ResponseBody
-    @RequestMapping(value = "/subjects", method = RequestMethod.GET)
-    public List<String> subjects() {
+    @RequestMapping(value = SUBJECTS1, method = RequestMethod.GET)
+    public List<String> getSubjects() {
         return subjectManagerService.getSubjectsWithNameAndGrade();
     }
 
     @ResponseBody
-    @RequestMapping(value = "/create", method = RequestMethod.POST)
+    @RequestMapping(value = CREATE, method = RequestMethod.POST)
     public Boolean createUser(String name, Boolean isAdmin, String subjects, Model model) {
         return userManagerService.createUser(name, isAdmin, subjects);
     }
 
     @ResponseBody
-    @RequestMapping(value = "/update", method = RequestMethod.POST)
+    @RequestMapping(value = UPDATE, method = RequestMethod.POST)
     public Boolean updateUser(String name, Boolean isAdmin, String subjects, Model model) {
         return userManagerService.updateUser(name, isAdmin, subjects);
     }
 
     @ResponseBody
-    @RequestMapping(value = "/delete/{name}", method = RequestMethod.DELETE)
-    public void deleteUser(@PathVariable("name") String name) {
+    @RequestMapping(value = DELETE_NAME, method = RequestMethod.DELETE)
+    public void deleteUser(@PathVariable(NAME) String name) {
         userManagerService.deleteUser(name);
     }
 
-    @RequestMapping(value = "/logout", method = RequestMethod.GET)
+    @RequestMapping(value = LOGOUT, method = RequestMethod.GET)
     public String logout(HttpSession httpSession) {
         httpSession.invalidate();
-        return "redirect:/";
+        return REDIRECT;
     }
 
     @ResponseBody
-    @RequestMapping(value = "/timetable", method = RequestMethod.POST)
+    @RequestMapping(value = TIMETABLE, method = RequestMethod.POST)
     public Boolean saveTimetable(@RequestBody TimetableRequest timetable) {
         return timetableManagerService.saveTimetables(timetable);
     }
